@@ -13,5 +13,21 @@ class ShareToStories {
     Color bottomColor,
   }) async {
     assert(backgroundAssetUri != null || stickerAssetUri != null);
+
+    final Map<String, String> params = Map();
+    if (backgroundAssetUri != null) {
+      params["backgroundAssetUri"] = backgroundAssetUri.toString();
+    }
+    if (stickerAssetUri != null) {
+      params["stickerAssetUri"] = stickerAssetUri.toString();
+    }
+    if (topColor != null) {
+      params["topColor"] = "#${topColor.value.toRadixString(16)}";
+    }
+    if (bottomColor != null) {
+      params["bottomColor"] = "#${bottomColor.value.toRadixString(16)}";
+    }
+
+    return CHANNEL.invokeMethod<void>("share_to_stories/instagram", params);
   }
 }
