@@ -29,7 +29,7 @@ flutter:
     platforms:
       android:
         package: tk.vrk.flutter.share.to.flutter_share_to_stories
-        pluginClass: FlutterShareToStoriesPlugin
+        pluginClass: ShareToStoriesPlugin
       ios:
         pluginClass: FlutterShareToStoriesPlugin
 
