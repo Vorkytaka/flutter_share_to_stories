@@ -1,9 +1,22 @@
 package tk.vrk.flutter.share.to.flutter_share_to_stories;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
 public class ShareToInstagramStories {
+    private Context context;
+    private Activity activity;
+
+    ShareToInstagramStories(Context context) {
+        this.context = context;
+    }
+
+    void setActivity(Activity activity) {
+        this.activity = activity;
+    }
+
     void shareToStories(Uri backgroundAssetUri, Uri stickerAssetUri, String topColor, String bottomColor) {
         if (backgroundAssetUri == null && stickerAssetUri == null) {
             throw new IllegalArgumentException("Background Asset Uri or Sticker Asset Uri must not be null");
