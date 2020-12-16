@@ -17,13 +17,16 @@ public class ShareToStoriesPlugin implements FlutterPlugin {
     private MethodCallHandler handler;
     private ShareToInstagramStories shareToInstagramStories;
 
-
     @Override
-    public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
+    public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
+        attach(binding.getApplicationContext(), null, binding.getBinaryMessenger());
     }
 
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+        methodChannel.setMethodCallHandler(null);
+        methodChannel = null;
+        shareToInstagramStories = null;
     }
 
     private void attach(Context context, Activity activity, BinaryMessenger messenger) {
