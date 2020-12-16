@@ -17,6 +17,12 @@ public class ShareToStoriesPlugin implements FlutterPlugin {
     private MethodCallHandler handler;
     private ShareToInstagramStories shareToInstagramStories;
 
+    @SuppressWarnings("deprecation")
+    public static void registerWith(io.flutter.plugin.common.PluginRegistry.Registrar registrar) {
+        ShareToStoriesPlugin plugin = new ShareToStoriesPlugin();
+        plugin.attach(registrar.context(), registrar.activity(), registrar.messenger());
+    }
+
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
         attach(binding.getApplicationContext(), null, binding.getBinaryMessenger());
