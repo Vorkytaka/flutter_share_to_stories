@@ -44,7 +44,10 @@ public class ShareToInstagramStories {
         }
 
         if (stickerAssetUri != null) {
-            intent.putExtra("interactive_asset_uri", stickerAssetUri);
+            File file = new File(stickerAssetUri.getPath());
+            Uri uri = FileProvider.getUriForFile(context, context.getPackageName() + ".flutter.share_to_stories", file);
+
+            intent.putExtra("interactive_asset_uri", uri);
         }
 
         if (topColor != null) {
