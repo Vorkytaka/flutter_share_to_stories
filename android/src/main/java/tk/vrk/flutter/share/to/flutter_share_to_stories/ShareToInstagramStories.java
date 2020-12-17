@@ -47,7 +47,10 @@ public class ShareToInstagramStories {
             File file = new File(stickerAssetUri.getPath());
             Uri uri = FileProvider.getUriForFile(context, context.getPackageName() + ".flutter.share_to_stories", file);
 
+            intent.setType("image/jpeg");
             intent.putExtra("interactive_asset_uri", uri);
+            activity.grantUriPermission(
+                    "com.instagram.android", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
         }
 
         if (topColor != null) {
