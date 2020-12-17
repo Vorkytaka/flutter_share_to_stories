@@ -5,11 +5,14 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
+import io.flutter.Log;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.embedding.engine.plugins.activity.ActivityAware;
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodChannel;
 
-public class ShareToStoriesPlugin implements FlutterPlugin {
+public class ShareToStoriesPlugin implements FlutterPlugin, ActivityAware {
 
     private static final String CHANNEL = "vrk.tk/share_to_stories";
 
@@ -33,6 +36,26 @@ public class ShareToStoriesPlugin implements FlutterPlugin {
         methodChannel.setMethodCallHandler(null);
         methodChannel = null;
         shareToInstagramStories = null;
+    }
+
+    @Override
+    public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
+        shareToInstagramStories.setActivity(binding.getActivity());
+    }
+
+    @Override
+    public void onDetachedFromActivityForConfigChanges() {
+        detach();
+    }
+
+    @Override
+    public void onReattachedToActivityForConfigChanges(@NonNull ActivityPluginBinding binding) {
+        onAttachedToActivity(binding);
+    }
+
+    @Override
+    public void onDetachedFromActivity() {
+        onDetachedFromActivity();
     }
 
     private void attach(Context context, Activity activity, BinaryMessenger messenger) {
