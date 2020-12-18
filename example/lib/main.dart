@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 void main() {
   runApp(MyApp());
@@ -44,13 +45,50 @@ class _SelectorWidgetState extends State<SelectorWidget> {
             Stack(
               alignment: Alignment.center,
               children: [
-                Placeholder(
-                  strokeWidth: 0.5,
-                  color: Colors.grey,
-                ),
+                _background == null
+                    ? Placeholder(
+                        strokeWidth: 0.5,
+                        color: Colors.grey,
+                      )
+                    : Image.file(_background),
                 ElevatedButton(
                   child: Text("Select Background Asset"),
-                  onPressed: () {},
+                  onPressed: () async {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        content: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            ElevatedButton(
+                              child: Text("Gallery"),
+                              onPressed: () async {
+                                final image = await ImagePicker.pickImage(
+                                  source: ImageSource.gallery,
+                                );
+                                Navigator.of(context).pop();
+                                setState(() {
+                                  _background = image;
+                                });
+                              },
+                            ),
+                            ElevatedButton(
+                              child: Text("Camera"),
+                              onPressed: () async {
+                                final image = await ImagePicker.pickImage(
+                                  source: ImageSource.camera,
+                                );
+                                Navigator.of(context).pop();
+                                setState(() {
+                                  _background = image;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
