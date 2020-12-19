@@ -101,9 +101,73 @@ class _SelectorWidgetState extends State<SelectorWidget> {
                   strokeWidth: 0.5,
                   color: Colors.grey,
                 ),
+                if(_topColor != null) Container(color: _topColor,),
                 ElevatedButton(
                   child: Text("Select Top Color"),
-                  onPressed: () {},
+                  onPressed: () async {
+                    final Color color = await showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text("Select Top Color"),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.of(context).pop(Colors.red);
+                                    },
+                                    child: Container(
+                                      height: 50,
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    height: 50,
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    height: 50,
+                                    color: Colors.green,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    height: 50,
+                                    color: Colors.yellow,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    height: 50,
+                                    color: Colors.cyan,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    height: 50,
+                                    color: Colors.orange,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+
+                    if(color != null) {
+                      setState(() {
+                        _topColor = color;
+                      });
+                    }
+                  },
                 ),
               ],
             ),
