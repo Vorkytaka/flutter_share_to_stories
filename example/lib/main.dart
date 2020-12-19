@@ -56,46 +56,13 @@ class _SelectorWidgetState extends State<SelectorWidget> {
                   onPressed: () async {
                     showDialog(
                       context: context,
-                      builder: (context) => AlertDialog(
-                        contentPadding: EdgeInsets.zero,
-                        content: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SizedBox(height: 16),
-                            Text("Select Background Asset"),
-                            SizedBox(height: 8),
-                            SizedBox(
-                              width: double.infinity,
-                              child: TextButton(
-                                child: Text("Gallery"),
-                                onPressed: () async {
-                                  final image = await ImagePicker.pickImage(
-                                    source: ImageSource.gallery,
-                                  );
-                                  Navigator.of(context).pop();
-                                  setState(() {
-                                    _background = image;
-                                  });
-                                },
-                              ),
-                            ),
-                            SizedBox(
-                              width: double.infinity,
-                              child: TextButton(
-                                child: Text("Camera"),
-                                onPressed: () async {
-                                  final image = await ImagePicker.pickImage(
-                                    source: ImageSource.camera,
-                                  );
-                                  Navigator.of(context).pop();
-                                  setState(() {
-                                    _background = image;
-                                  });
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
+                      builder: (context) => _createSelectImageDialog(
+                        title: "Select Background Asset",
+                        onGetImage: (image) {
+                          setState(() {
+                            _background = image;
+                          });
+                        },
                       ),
                     );
                   },
@@ -158,6 +125,49 @@ class _SelectorWidgetState extends State<SelectorWidget> {
           ),
         )
       ],
+    );
+  }
+
+  Widget _createSelectImageDialog({
+    String title,
+    void onGetImage(File image),
+  }) {
+    return AlertDialog(
+      contentPadding: EdgeInsets.zero,
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(height: 16),
+          Text(title),
+          SizedBox(height: 8),
+          SizedBox(
+            width: double.infinity,
+            child: TextButton(
+              child: Text("Gallery"),
+              onPressed: () async {
+                final image = await ImagePicker.pickImage(
+                  source: ImageSource.gallery,
+                );
+                Navigator.of(context).pop();
+                onGetImage(image);
+              },
+            ),
+          ),
+          SizedBox(
+            width: double.infinity,
+            child: TextButton(
+              child: Text("Camera"),
+              onPressed: () async {
+                final image = await ImagePicker.pickImage(
+                  source: ImageSource.camera,
+                );
+                Navigator.of(context).pop();
+                onGetImage(image);
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
