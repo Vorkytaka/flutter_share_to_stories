@@ -45,12 +45,11 @@ class _SelectorWidgetState extends State<SelectorWidget> {
             Stack(
               alignment: Alignment.center,
               children: [
-                _background == null
-                    ? Placeholder(
-                        strokeWidth: 0.5,
-                        color: Colors.grey,
-                      )
-                    : Image.file(_background),
+                Placeholder(
+                  strokeWidth: 0.5,
+                  color: Colors.grey,
+                ),
+                if (_background != null) Image.file(_background),
                 ElevatedButton(
                   child: Text("Select Background Asset"),
                   onPressed: () {
@@ -72,12 +71,11 @@ class _SelectorWidgetState extends State<SelectorWidget> {
             Stack(
               alignment: Alignment.center,
               children: [
-                _sticker == null
-                    ? Placeholder(
-                        strokeWidth: 0.5,
-                        color: Colors.grey,
-                      )
-                    : Image.file(_sticker),
+                Placeholder(
+                  strokeWidth: 0.5,
+                  color: Colors.grey,
+                ),
+                if (_sticker != null) Image.file(_sticker),
                 ElevatedButton(
                   child: Text("Select Sticker Asset"),
                   onPressed: () {
