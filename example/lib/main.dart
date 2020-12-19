@@ -101,68 +101,30 @@ class _SelectorWidgetState extends State<SelectorWidget> {
                   strokeWidth: 0.5,
                   color: Colors.grey,
                 ),
-                if(_topColor != null) Container(color: _topColor,),
+                if (_topColor != null)
+                  Container(
+                    color: _topColor,
+                  ),
                 ElevatedButton(
                   child: Text("Select Top Color"),
                   onPressed: () async {
                     final Color color = await showDialog(
                       context: context,
-                      builder: (context) => AlertDialog(
-                        content: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text("Select Top Color"),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: InkWell(
-                                    onTap: () {
-                                      Navigator.of(context).pop(Colors.red);
-                                    },
-                                    child: Container(
-                                      height: 50,
-                                      color: Colors.red,
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    height: 50,
-                                    color: Colors.blue,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    height: 50,
-                                    color: Colors.green,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    height: 50,
-                                    color: Colors.yellow,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    height: 50,
-                                    color: Colors.cyan,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    height: 50,
-                                    color: Colors.orange,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                      builder: (context) => _createSelectColorDialog(
+                        title: "Select Top Color",
+                        colors: [
+                          Colors.red,
+                          Colors.blue,
+                          Colors.green,
+                          Colors.yellow,
+                          Colors.cyan,
+                        ],
                       ),
                     );
 
-                    if(color != null) {
+                    print(color);
+
+                    if (color != null) {
                       setState(() {
                         _topColor = color;
                       });
@@ -243,6 +205,40 @@ class _SelectorWidgetState extends State<SelectorWidget> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _createSelectColorDialog({
+    String title,
+    List<Color> colors,
+  }) {
+    return AlertDialog(
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(title),
+          SizedBox(height: 8),
+          Row(
+            children: [
+              for (final color in colors) _createColorItem(color),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _createColorItem(Color color) {
+    return Expanded(
+      child: InkWell(
+        onTap: () {
+          Navigator.of(context).pop(color);
+        },
+        child: Container(
+          height: 50,
+          color: color,
+        ),
       ),
     );
   }
