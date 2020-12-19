@@ -101,10 +101,7 @@ class _SelectorWidgetState extends State<SelectorWidget> {
                   strokeWidth: 0.5,
                   color: Colors.grey,
                 ),
-                if (_topColor != null)
-                  Container(
-                    color: _topColor,
-                  ),
+                if (_topColor != null) Container(color: _topColor),
                 ElevatedButton(
                   child: Text("Select Top Color"),
                   onPressed: () async {
@@ -122,8 +119,6 @@ class _SelectorWidgetState extends State<SelectorWidget> {
                       ),
                     );
 
-                    print(color);
-
                     if (color != null) {
                       setState(() {
                         _topColor = color;
@@ -140,9 +135,30 @@ class _SelectorWidgetState extends State<SelectorWidget> {
                   strokeWidth: 0.5,
                   color: Colors.grey,
                 ),
+                if (_bottomColor != null) Container(color: _bottomColor),
                 ElevatedButton(
                   child: Text("Select Bottom Color"),
-                  onPressed: () {},
+                  onPressed: () async {
+                    final Color color = await showDialog(
+                      context: context,
+                      builder: (context) => _createSelectColorDialog(
+                        title: "Select Bottom Color",
+                        colors: [
+                          Colors.red,
+                          Colors.blue,
+                          Colors.green,
+                          Colors.yellow,
+                          Colors.cyan,
+                        ],
+                      ),
+                    );
+
+                    if (color != null) {
+                      setState(() {
+                        _bottomColor = color;
+                      });
+                    }
+                  },
                 ),
               ],
             )
