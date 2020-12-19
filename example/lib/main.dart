@@ -53,7 +53,7 @@ class _SelectorWidgetState extends State<SelectorWidget> {
                     : Image.file(_background),
                 ElevatedButton(
                   child: Text("Select Background Asset"),
-                  onPressed: () async {
+                  onPressed: () {
                     showDialog(
                       context: context,
                       builder: (context) => _createSelectImageDialog(
@@ -72,13 +72,27 @@ class _SelectorWidgetState extends State<SelectorWidget> {
             Stack(
               alignment: Alignment.center,
               children: [
-                Placeholder(
-                  strokeWidth: 0.5,
-                  color: Colors.grey,
-                ),
+                _sticker == null
+                    ? Placeholder(
+                        strokeWidth: 0.5,
+                        color: Colors.grey,
+                      )
+                    : Image.file(_sticker),
                 ElevatedButton(
                   child: Text("Select Sticker Asset"),
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => _createSelectImageDialog(
+                        title: "Select Sticker Asset",
+                        onGetImage: (image) {
+                          setState(() {
+                            _sticker = image;
+                          });
+                        },
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
