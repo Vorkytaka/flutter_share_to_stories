@@ -57,32 +57,42 @@ class _SelectorWidgetState extends State<SelectorWidget> {
                     showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
-                        content: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        contentPadding: EdgeInsets.zero,
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            ElevatedButton(
-                              child: Text("Gallery"),
-                              onPressed: () async {
-                                final image = await ImagePicker.pickImage(
-                                  source: ImageSource.gallery,
-                                );
-                                Navigator.of(context).pop();
-                                setState(() {
-                                  _background = image;
-                                });
-                              },
+                            SizedBox(height: 16),
+                            Text("Select Background Asset"),
+                            SizedBox(height: 8),
+                            SizedBox(
+                              width: double.infinity,
+                              child: TextButton(
+                                child: Text("Gallery"),
+                                onPressed: () async {
+                                  final image = await ImagePicker.pickImage(
+                                    source: ImageSource.gallery,
+                                  );
+                                  Navigator.of(context).pop();
+                                  setState(() {
+                                    _background = image;
+                                  });
+                                },
+                              ),
                             ),
-                            ElevatedButton(
-                              child: Text("Camera"),
-                              onPressed: () async {
-                                final image = await ImagePicker.pickImage(
-                                  source: ImageSource.camera,
-                                );
-                                Navigator.of(context).pop();
-                                setState(() {
-                                  _background = image;
-                                });
-                              },
+                            SizedBox(
+                              width: double.infinity,
+                              child: TextButton(
+                                child: Text("Camera"),
+                                onPressed: () async {
+                                  final image = await ImagePicker.pickImage(
+                                    source: ImageSource.camera,
+                                  );
+                                  Navigator.of(context).pop();
+                                  setState(() {
+                                    _background = image;
+                                  });
+                                },
+                              ),
                             ),
                           ],
                         ),
@@ -143,7 +153,7 @@ class _SelectorWidgetState extends State<SelectorWidget> {
             height: 50,
             child: ElevatedButton(
               child: Text("SHARE TO INSTAGRAM"),
-              onPressed: null,
+              onPressed: _background != null || _sticker != null ? () {} : null,
             ),
           ),
         )
