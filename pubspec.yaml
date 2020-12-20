@@ -30,8 +30,6 @@ flutter:
       android:
         package: tk.vrk.flutter.share.to.flutter_share_to_stories
         pluginClass: ShareToStoriesPlugin
-      ios:
-        pluginClass: FlutterShareToStoriesPlugin
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
