@@ -298,6 +298,21 @@ class ColorSelectorWidget extends StatelessWidget {
           Row(
             children: [
               for (final color in colors) _createColorItem(context, color),
+              // item for remove selected color
+              Expanded(
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).pop(null);
+                  },
+                  child: SizedBox(
+                    height: 50,
+                    child: Placeholder(
+                      color: Colors.grey,
+                      strokeWidth: 0.5,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ],
