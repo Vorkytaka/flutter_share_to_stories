@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_share_to_stories/flutter_share_to_stories.dart';
 import 'package:image_picker/image_picker.dart';
 
 void main() {
@@ -180,7 +181,19 @@ class _SelectorWidgetState extends State<SelectorWidget> {
             // for button with gradient colors thanks to the `bonnyz
             // https://stackoverflow.com/a/58417424
             child: RaisedButton(
-              onPressed: _background != null || _sticker != null ? () {} : null,
+              onPressed: _background != null || _sticker != null
+                  ? () {
+                      final backgroundUri =
+                          _background != null ? _background.uri : null;
+                      final stickerUri = _sticker != null ? _sticker.uri : null;
+                      _shareToTheInstagram(
+                        backgroundAssetUri: backgroundUri,
+                        stickerAssetUri: stickerUri,
+                        topColor: _topColor,
+                        bottomColor: _bottomColor,
+                      );
+                    }
+                  : null,
               padding: const EdgeInsets.all(0.0),
               child: Ink(
                 decoration: const BoxDecoration(
@@ -282,6 +295,20 @@ class _SelectorWidgetState extends State<SelectorWidget> {
           color: color,
         ),
       ),
+    );
+  }
+
+  Future<void> _shareToTheInstagram({
+    Uri backgroundAssetUri,
+    Uri stickerAssetUri,
+    Color topColor,
+    Color bottomColor,
+  }) {
+    ShareToStories.shareToInstagram(
+      backgroundAssetUri: backgroundAssetUri,
+      stickerAssetUri: stickerAssetUri,
+      topColor: topColor,
+      bottomColor: bottomColor,
     );
   }
 }
