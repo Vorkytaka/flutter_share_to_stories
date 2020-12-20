@@ -103,17 +103,7 @@ class _SelectorWidgetState extends State<SelectorWidget> {
             // https://stackoverflow.com/a/58417424
             child: RaisedButton(
               onPressed: _background != null || _sticker != null
-                  ? () {
-                      final backgroundUri =
-                          _background != null ? _background.uri : null;
-                      final stickerUri = _sticker != null ? _sticker.uri : null;
-                      _shareToTheInstagram(
-                        backgroundAssetUri: backgroundUri,
-                        stickerAssetUri: stickerUri,
-                        topColor: _topColor,
-                        bottomColor: _bottomColor,
-                      );
-                    }
+                  ? _shareToTheInstagram
                   : null,
               padding: const EdgeInsets.all(0.0),
               child: Ink(
@@ -142,17 +132,15 @@ class _SelectorWidgetState extends State<SelectorWidget> {
     );
   }
 
-  Future<void> _shareToTheInstagram({
-    Uri backgroundAssetUri,
-    Uri stickerAssetUri,
-    Color topColor,
-    Color bottomColor,
-  }) async {
+  Future<void> _shareToTheInstagram() async {
+    final backgroundUri = _background != null ? _background.uri : null;
+    final stickerUri = _sticker != null ? _sticker.uri : null;
+
     ShareToStories.shareToInstagram(
-      backgroundAssetUri: backgroundAssetUri,
-      stickerAssetUri: stickerAssetUri,
-      topColor: topColor,
-      bottomColor: bottomColor,
+      backgroundAssetUri: backgroundUri,
+      stickerAssetUri: stickerUri,
+      topColor: _topColor,
+      bottomColor: _bottomColor,
     );
   }
 }
