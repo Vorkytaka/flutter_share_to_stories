@@ -112,62 +112,24 @@ class _SelectorWidgetState extends State<SelectorWidget> {
                 ),
               ],
             ),
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                Placeholder(
-                  strokeWidth: 0.5,
-                  color: Colors.grey,
-                ),
-                if (_topColor != null) Container(color: _topColor),
-                ElevatedButton(
-                  child: Text("Select Top Color"),
-                  onPressed: () async {
-                    final Color color = await showDialog(
-                      context: context,
-                      builder: (context) => _createSelectColorDialog(
-                        title: "Select Top Color",
-                        colors: SELECTABLE_COLORS,
-                      ),
-                    );
-
-                    if (color != null) {
-                      setState(() {
-                        _topColor = color;
-                      });
-                    }
-                  },
-                ),
-              ],
+            ColorSelectorWidget(
+              title: "Select Top Color",
+              color: _topColor,
+              onSelected: (color) {
+                setState(() {
+                  _topColor = color;
+                });
+              },
             ),
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                Placeholder(
-                  strokeWidth: 0.5,
-                  color: Colors.grey,
-                ),
-                if (_bottomColor != null) Container(color: _bottomColor),
-                ElevatedButton(
-                  child: Text("Select Bottom Color"),
-                  onPressed: () async {
-                    final Color color = await showDialog(
-                      context: context,
-                      builder: (context) => _createSelectColorDialog(
-                        title: "Select Bottom Color",
-                        colors: SELECTABLE_COLORS,
-                      ),
-                    );
-
-                    if (color != null) {
-                      setState(() {
-                        _bottomColor = color;
-                      });
-                    }
-                  },
-                ),
-              ],
-            )
+            ColorSelectorWidget(
+              title: "Select Bottom Color",
+              color: _bottomColor,
+              onSelected: (color) {
+                setState(() {
+                  _bottomColor = color;
+                });
+              },
+            ),
           ],
         ),
         SizedBox(
@@ -264,7 +226,66 @@ class _SelectorWidgetState extends State<SelectorWidget> {
     );
   }
 
+  Future<void> _shareToTheInstagram({
+    Uri backgroundAssetUri,
+    Uri stickerAssetUri,
+    Color topColor,
+    Color bottomColor,
+  }) async {
+    ShareToStories.shareToInstagram(
+      backgroundAssetUri: backgroundAssetUri,
+      stickerAssetUri: stickerAssetUri,
+      topColor: topColor,
+      bottomColor: bottomColor,
+    );
+  }
+}
+
+typedef void OnColorSelected(Color color);
+
+class ColorSelectorWidget extends StatelessWidget {
+  final String title;
+  final Color color;
+  final OnColorSelected onSelected;
+
+  const ColorSelectorWidget({
+    Key key,
+    this.title,
+    this.color,
+    this.onSelected,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Placeholder(
+          strokeWidth: 0.5,
+          color: Colors.grey,
+        ),
+        if (color != null) Container(color: color),
+        ElevatedButton(
+          child: Text(title),
+          onPressed: () async {
+            final Color color = await showDialog(
+              context: context,
+              builder: (context) => _createSelectColorDialog(
+                context: context,
+                title: title,
+                colors: SELECTABLE_COLORS,
+              ),
+            );
+
+            onSelected(color);
+          },
+        ),
+      ],
+    );
+  }
+
   Widget _createSelectColorDialog({
+    BuildContext context,
     String title,
     List<Color> colors,
   }) {
@@ -276,7 +297,7 @@ class _SelectorWidgetState extends State<SelectorWidget> {
           SizedBox(height: 8),
           Row(
             children: [
-              for (final color in colors) _createColorItem(color),
+              for (final color in colors) _createColorItem(context, color),
             ],
           ),
         ],
@@ -284,7 +305,10 @@ class _SelectorWidgetState extends State<SelectorWidget> {
     );
   }
 
-  Widget _createColorItem(Color color) {
+  Widget _createColorItem(
+    BuildContext context,
+    Color color,
+  ) {
     return Expanded(
       child: InkWell(
         onTap: () {
@@ -295,20 +319,6 @@ class _SelectorWidgetState extends State<SelectorWidget> {
           color: color,
         ),
       ),
-    );
-  }
-
-  Future<void> _shareToTheInstagram({
-    Uri backgroundAssetUri,
-    Uri stickerAssetUri,
-    Color topColor,
-    Color bottomColor,
-  }) {
-    ShareToStories.shareToInstagram(
-      backgroundAssetUri: backgroundAssetUri,
-      stickerAssetUri: stickerAssetUri,
-      topColor: topColor,
-      bottomColor: bottomColor,
     );
   }
 }
