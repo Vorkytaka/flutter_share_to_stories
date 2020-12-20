@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_share_to_stories/flutter_share_to_stories.dart';
+import 'package:flutter_share_to_stories/share_to_stories.dart';
 import 'package:image_picker/image_picker.dart';
 
 void main() {
