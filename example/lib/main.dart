@@ -7,6 +7,15 @@ void main() {
   runApp(MyApp());
 }
 
+const List<Color> INSTAGRAM_GRADIENT = [
+  Color(0xff405de6),
+  Color(0xff5851db),
+  Color(0xff833ab4),
+  Color(0xffc13584),
+  Color(0xffe1306c),
+  Color(0xfffd1d1d),
+];
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -172,9 +181,30 @@ class _SelectorWidgetState extends State<SelectorWidget> {
           child: SizedBox(
             width: double.infinity,
             height: 50,
-            child: ElevatedButton(
-              child: Text("SHARE TO INSTAGRAM"),
+            // for button with gradient colors thanks to the `bonnyz
+            // https://stackoverflow.com/a/58417424
+            child: RaisedButton(
               onPressed: _background != null || _sticker != null ? () {} : null,
+              padding: const EdgeInsets.all(0.0),
+              child: Ink(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: INSTAGRAM_GRADIENT,
+                  ),
+                ),
+                child: Container(
+                  constraints: const BoxConstraints(
+                    minWidth: 88.0,
+                    minHeight: 36.0,
+                  ),
+                  alignment: Alignment.center,
+                  child: const Text(
+                    'Share to the Instagram',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
             ),
           ),
         )
