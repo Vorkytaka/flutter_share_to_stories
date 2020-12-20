@@ -6,6 +6,8 @@ import 'package:image_picker/image_picker.dart';
 typedef OnAssetSelected(File asset);
 
 class AssetSelectorWidget extends StatelessWidget {
+  static final ImagePicker _imagePicker = ImagePicker();
+
   final String title;
   final File asset;
   final OnAssetSelected onSelected;
@@ -73,9 +75,13 @@ class AssetSelectorWidget extends StatelessWidget {
       child: TextButton(
         child: Text(title),
         onPressed: () async {
-          // ignore: deprecated_member_use
-          // new way work with `PickedFile` instead of `File`
-          final asset = await ImagePicker.pickImage(source: source);
+          final selectedAsset = await _imagePicker.getImage(source: source);
+          File asset;
+          if (selectedAsset != null) {
+            asset = File(selectedAsset.path);
+          } else {
+            asset = null;
+          }
           Navigator.of(context).pop(asset);
         },
       ),
