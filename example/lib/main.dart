@@ -53,57 +53,23 @@ class _SelectorWidgetState extends State<SelectorWidget> {
           shrinkWrap: true,
           crossAxisCount: 2,
           children: [
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                Placeholder(
-                  strokeWidth: 0.5,
-                  color: Colors.grey,
-                ),
-                if (_background != null) Image.file(_background),
-                ElevatedButton(
-                  child: Text("Select Background Asset"),
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => _createSelectImageDialog(
-                        title: "Select Background Asset",
-                        onGetImage: (image) {
-                          setState(() {
-                            _background = image;
-                          });
-                        },
-                      ),
-                    );
-                  },
-                ),
-              ],
+            AssetSelectorWidget(
+              title: "Select Background Asset",
+              asset: _background,
+              onSelected: (asset) {
+                setState(() {
+                  _background = asset;
+                });
+              },
             ),
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                Placeholder(
-                  strokeWidth: 0.5,
-                  color: Colors.grey,
-                ),
-                if (_sticker != null) Image.file(_sticker),
-                ElevatedButton(
-                  child: Text("Select Sticker Asset"),
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => _createSelectImageDialog(
-                        title: "Select Sticker Asset",
-                        onGetImage: (image) {
-                          setState(() {
-                            _sticker = image;
-                          });
-                        },
-                      ),
-                    );
-                  },
-                ),
-              ],
+            AssetSelectorWidget(
+              title: "Select Sticker Asset",
+              asset: _sticker,
+              onSelected: (asset) {
+                setState(() {
+                  _sticker = asset;
+                });
+              },
             ),
             ColorSelectorWidget(
               title: "Select Top Color",
@@ -176,9 +142,65 @@ class _SelectorWidgetState extends State<SelectorWidget> {
     );
   }
 
+  Future<void> _shareToTheInstagram({
+    Uri backgroundAssetUri,
+    Uri stickerAssetUri,
+    Color topColor,
+    Color bottomColor,
+  }) async {
+    ShareToStories.shareToInstagram(
+      backgroundAssetUri: backgroundAssetUri,
+      stickerAssetUri: stickerAssetUri,
+      topColor: topColor,
+      bottomColor: bottomColor,
+    );
+  }
+}
+
+typedef OnAssetSelected(File asset);
+
+class AssetSelectorWidget extends StatelessWidget {
+  final String title;
+  final File asset;
+  final OnAssetSelected onSelected;
+
+  const AssetSelectorWidget({
+    Key key,
+    this.title,
+    this.asset,
+    this.onSelected,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Placeholder(
+          strokeWidth: 0.5,
+          color: Colors.grey,
+        ),
+        if (asset != null) Image.file(asset),
+        ElevatedButton(
+          child: Text(title),
+          onPressed: () async {
+            final asset = await showDialog(
+              context: context,
+              builder: (context) => _createSelectImageDialog(
+                context: context,
+                title: title,
+              ),
+            );
+            onSelected(asset);
+          },
+        ),
+      ],
+    );
+  }
+
   Widget _createSelectImageDialog({
+    BuildContext context,
     String title,
-    void onGetImage(File image),
   }) {
     return AlertDialog(
       contentPadding: EdgeInsets.zero,
@@ -193,11 +215,10 @@ class _SelectorWidgetState extends State<SelectorWidget> {
             child: TextButton(
               child: Text("Gallery"),
               onPressed: () async {
-                final image = await ImagePicker.pickImage(
+                final asset = await ImagePicker.pickImage(
                   source: ImageSource.gallery,
                 );
-                Navigator.of(context).pop();
-                onGetImage(image);
+                Navigator.of(context).pop(asset);
               },
             ),
           ),
@@ -206,30 +227,15 @@ class _SelectorWidgetState extends State<SelectorWidget> {
             child: TextButton(
               child: Text("Camera"),
               onPressed: () async {
-                final image = await ImagePicker.pickImage(
+                final asset = await ImagePicker.pickImage(
                   source: ImageSource.camera,
                 );
-                Navigator.of(context).pop();
-                onGetImage(image);
+                Navigator.of(context).pop(asset);
               },
             ),
           ),
         ],
       ),
-    );
-  }
-
-  Future<void> _shareToTheInstagram({
-    Uri backgroundAssetUri,
-    Uri stickerAssetUri,
-    Color topColor,
-    Color bottomColor,
-  }) async {
-    ShareToStories.shareToInstagram(
-      backgroundAssetUri: backgroundAssetUri,
-      stickerAssetUri: stickerAssetUri,
-      topColor: topColor,
-      bottomColor: bottomColor,
     );
   }
 }
