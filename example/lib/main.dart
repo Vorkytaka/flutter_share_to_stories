@@ -16,6 +16,14 @@ const List<Color> INSTAGRAM_GRADIENT = [
   Color(0xfffd1d1d),
 ];
 
+const List<Color> SELECTABLE_COLORS = [
+  Colors.red,
+  Colors.blue,
+  Colors.green,
+  Colors.yellow,
+  Colors.cyan,
+];
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -118,13 +126,7 @@ class _SelectorWidgetState extends State<SelectorWidget> {
                       context: context,
                       builder: (context) => _createSelectColorDialog(
                         title: "Select Top Color",
-                        colors: [
-                          Colors.red,
-                          Colors.blue,
-                          Colors.green,
-                          Colors.yellow,
-                          Colors.cyan,
-                        ],
+                        colors: SELECTABLE_COLORS,
                       ),
                     );
 
@@ -152,13 +154,7 @@ class _SelectorWidgetState extends State<SelectorWidget> {
                       context: context,
                       builder: (context) => _createSelectColorDialog(
                         title: "Select Bottom Color",
-                        colors: [
-                          Colors.red,
-                          Colors.blue,
-                          Colors.green,
-                          Colors.yellow,
-                          Colors.cyan,
-                        ],
+                        colors: SELECTABLE_COLORS,
                       ),
                     );
 
