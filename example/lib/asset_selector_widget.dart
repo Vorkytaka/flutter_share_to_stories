@@ -56,31 +56,28 @@ class AssetSelectorWidget extends StatelessWidget {
           SizedBox(height: 16),
           Text(title),
           SizedBox(height: 8),
-          SizedBox(
-            width: double.infinity,
-            child: TextButton(
-              child: Text("Gallery"),
-              onPressed: () async {
-                final asset = await ImagePicker.pickImage(
-                  source: ImageSource.gallery,
-                );
-                Navigator.of(context).pop(asset);
-              },
-            ),
-          ),
-          SizedBox(
-            width: double.infinity,
-            child: TextButton(
-              child: Text("Camera"),
-              onPressed: () async {
-                final asset = await ImagePicker.pickImage(
-                  source: ImageSource.camera,
-                );
-                Navigator.of(context).pop(asset);
-              },
-            ),
-          ),
+          _createSelector(context, "Gallery", ImageSource.gallery),
+          _createSelector(context, "Camera", ImageSource.camera),
         ],
+      ),
+    );
+  }
+
+  Widget _createSelector(
+    BuildContext context,
+    String title,
+    ImageSource source,
+  ) {
+    return SizedBox(
+      width: double.infinity,
+      child: TextButton(
+        child: Text(title),
+        onPressed: () async {
+          // ignore: deprecated_member_use
+          // new way work with `PickedFile` instead of `File`
+          final asset = await ImagePicker.pickImage(source: source);
+          Navigator.of(context).pop(asset);
+        },
       ),
     );
   }
