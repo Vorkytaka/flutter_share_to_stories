@@ -60,6 +60,16 @@ class AssetSelectorWidget extends StatelessWidget {
           SizedBox(height: 8),
           _createSelector(context, "Gallery", ImageSource.gallery),
           _createSelector(context, "Camera", ImageSource.camera),
+          // element for remove asset
+          SizedBox(
+            width: double.infinity,
+            child: TextButton(
+              child: Text("Remove"),
+              onPressed: () async {
+                Navigator.of(context).pop(null);
+              },
+            ),
+          ),
         ],
       ),
     );
