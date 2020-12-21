@@ -19,9 +19,14 @@ const List<Color> INSTAGRAM_GRADIENT = [
 ];
 
 class MyApp extends StatelessWidget {
+  final darkTheme = ThemeData.dark();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      themeMode: ThemeMode.system,
+      theme: ThemeData.light().copyWith(buttonTheme: darkTheme.buttonTheme),
+      darkTheme: darkTheme,
       home: Scaffold(
         appBar: AppBar(
           title: Text("Share to Instagram stories"),
@@ -121,7 +126,6 @@ class _SelectorWidgetState extends State<SelectorWidget> {
                   child: const Text(
                     'Share to the Instagram',
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white),
                   ),
                 ),
               ),
