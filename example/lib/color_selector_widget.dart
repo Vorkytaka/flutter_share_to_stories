@@ -57,6 +57,7 @@ class ColorSelectorWidget extends StatelessWidget {
     List<Color> colors,
   }) {
     return AlertDialog(
+      contentPadding: EdgeInsets.only(top: 16, bottom: 8),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

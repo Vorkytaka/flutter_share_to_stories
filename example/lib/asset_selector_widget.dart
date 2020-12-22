@@ -51,20 +51,29 @@ class AssetSelectorWidget extends StatelessWidget {
     String title,
   }) {
     return AlertDialog(
-      contentPadding: EdgeInsets.zero,
+      contentPadding: EdgeInsets.only(top: 16, bottom: 8),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(height: 16),
           Text(title),
-          SizedBox(height: 8),
-          _createSelector(context, "Gallery", ImageSource.gallery),
-          _createSelector(context, "Camera", ImageSource.camera),
+          _createSelector(
+            context,
+            Icons.photo_outlined,
+            "Gallery",
+            ImageSource.gallery,
+          ),
+          _createSelector(
+            context,
+            Icons.camera_alt_outlined,
+            "Camera",
+            ImageSource.camera,
+          ),
           // element for remove asset
           SizedBox(
             width: double.infinity,
-            child: TextButton(
-              child: Text("Remove"),
+            child: TextButton.icon(
+              icon: Icon(Icons.delete_outline),
+              label: Text("Remove"),
               onPressed: () async {
                 Navigator.of(context).pop(null);
               },
@@ -77,13 +86,15 @@ class AssetSelectorWidget extends StatelessWidget {
 
   Widget _createSelector(
     BuildContext context,
+    IconData icon,
     String title,
     ImageSource source,
   ) {
     return SizedBox(
       width: double.infinity,
-      child: TextButton(
-        child: Text(title),
+      child: TextButton.icon(
+        icon: Icon(icon),
+        label: Text(title),
         onPressed: () async {
           final selectedAsset = await _imagePicker.getImage(source: source);
           File asset;
