@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import android.webkit.MimeTypeMap;
 
 import androidx.core.content.FileProvider;
@@ -12,7 +11,7 @@ import androidx.core.content.FileProvider;
 import java.io.File;
 
 public class ShareToInstagramStories {
-    private Context context;
+    private final Context context;
     private Activity activity;
 
     ShareToInstagramStories(Context context) {
@@ -50,7 +49,10 @@ public class ShareToInstagramStories {
             intent.setType("image/jpeg");
             intent.putExtra("interactive_asset_uri", uri);
             activity.grantUriPermission(
-                    "com.instagram.android", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    "com.instagram.android",
+                    uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+            );
         }
 
         if (topColor != null) {
@@ -61,8 +63,17 @@ public class ShareToInstagramStories {
             intent.putExtra("bottom_background_color", bottomColor);
         }
 
-        if (activity.getPackageManager().resolveActivity(intent, 0) != null) {
-            activity.startActivityForResult(intent, 0);
+        startActivity(intent);
+    }
+
+    private void startActivity(Intent intent) {
+        if (context.getPackageManager().resolveActivity(intent, 0) != null) {
+            if (activity != null) {
+                activity.startActivityForResult(intent, 0);
+            } else if (context != null) {
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
         }
     }
 }
