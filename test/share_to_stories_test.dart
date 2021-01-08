@@ -1,5 +1,5 @@
 import 'package:flutter/services.dart';
-import 'package:flutter_share_to_stories/share_to_stories.dart';
+import 'package:flutter_share_to_stories/flutter_share_to_stories.dart';
 import 'package:flutter_test/flutter_test.dart' show TestWidgetsFlutterBinding;
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
