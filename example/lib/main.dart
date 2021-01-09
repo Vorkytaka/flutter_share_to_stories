@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_share_to_stories/share_to_stories.dart';
+import 'package:flutter_share_to_stories/flutter_share_to_stories.dart';
 import 'package:flutter_share_to_stories_example/asset_selector_widget.dart';
 import 'package:flutter_share_to_stories_example/color_selector_widget.dart';
 
