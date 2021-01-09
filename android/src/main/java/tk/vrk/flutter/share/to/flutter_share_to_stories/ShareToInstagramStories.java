@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.webkit.MimeTypeMap;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 
 import java.io.File;
@@ -75,5 +76,31 @@ public class ShareToInstagramStories {
                 context.startActivity(intent);
             }
         }
+    }
+
+    private Uri getFile(String path) {
+        File file = new File(path);
+
+        // todo: check if file is external
+
+        final Context context = getContext();
+        return FileProvider.getUriForFile(
+                context,
+                context.getPackageName() + ".flutter.share_to_stories",
+                file
+        );
+    }
+
+    @NonNull
+    private Context getContext() {
+        if (activity != null) {
+            return activity;
+        }
+
+        if (context != null) {
+            return context;
+        }
+
+        throw new IllegalStateException("Both context and activity are null");
     }
 }
