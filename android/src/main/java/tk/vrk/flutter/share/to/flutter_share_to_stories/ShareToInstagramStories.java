@@ -10,7 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class ShareToInstagramStories {
     private final Context context;
@@ -79,10 +83,10 @@ public class ShareToInstagramStories {
         }
     }
 
-    private Uri getFile(String path) {
+    private Uri getFile(String path) throws IOException {
         File file = new File(path);
         if (!fileIsOnExternal(file)) {
-            // todo: copy file to local
+            file = copyToExternalFolder(file);
         }
         final Context context = getContext();
         return FileProvider.getUriForFile(
@@ -104,13 +108,13 @@ public class ShareToInstagramStories {
 
     @NonNull
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    private File copyToExternalFolder(File file) {
+    private File copyToExternalFolder(File file) throws IOException {
         final File folder = getExternalFolder();
         if (!folder.exists()) {
             folder.mkdirs();
         }
         final File newFile = new File(folder, file.getName());
-        // todo: copy file
+        copy(file, newFile);
         return newFile;
     }
 
@@ -130,5 +134,26 @@ public class ShareToInstagramStories {
         }
 
         throw new IllegalStateException("Both context and activity are null");
+    }
+
+    // Thanks to Rakshi
+    // https://stackoverflow.com/a/9293885
+    private static void copy(File src, File dst) throws IOException {
+        InputStream in = new FileInputStream(src);
+        try {
+            OutputStream out = new FileOutputStream(dst);
+            try {
+                // Transfer bytes from in to out
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+            } finally {
+                out.close();
+            }
+        } finally {
+            in.close();
+        }
     }
 }
