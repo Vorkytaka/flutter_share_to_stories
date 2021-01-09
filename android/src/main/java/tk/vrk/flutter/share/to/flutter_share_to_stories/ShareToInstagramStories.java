@@ -103,6 +103,18 @@ public class ShareToInstagramStories {
     }
 
     @NonNull
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    private File copyToExternalFolder(File file) {
+        final File folder = getExternalFolder();
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+        final File newFile = new File(folder, file.getName());
+        // todo: copy file
+        return newFile;
+    }
+
+    @NonNull
     private File getExternalFolder() {
         return new File(getContext().getExternalCacheDir(), "share_to_stories");
     }
