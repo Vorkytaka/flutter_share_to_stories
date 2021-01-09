@@ -81,7 +81,7 @@ public class ShareToInstagramStories {
 
     private Uri getFile(String path) {
         File file = new File(path);
-        if(!fileIsOnExternal(file)) {
+        if (!fileIsOnExternal(file)) {
             // todo: copy file to local
         }
         final Context context = getContext();
@@ -100,6 +100,11 @@ public class ShareToInstagramStories {
         } catch (IOException e) {
             return false;
         }
+    }
+
+    @NonNull
+    private File getExternalFolder() {
+        return new File(getContext().getExternalCacheDir(), "share_to_stories");
     }
 
     @NonNull
