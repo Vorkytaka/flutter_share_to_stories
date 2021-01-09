@@ -4,6 +4,8 @@ import android.net.Uri;
 
 import androidx.annotation.NonNull;
 
+import java.io.IOException;
+
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 
@@ -33,8 +35,12 @@ public class MethodCallHandler implements MethodChannel.MethodCallHandler {
                 String topColor = call.argument("topColor");
                 String bottomColor = call.argument("bottomColor");
 
-                shareToInstagramStories.shareToStories(backgroundAssetUri, stickerAssetUri, topColor, bottomColor);
-                result.success(null);
+                try {
+                    shareToInstagramStories.shareToStories(backgroundAssetUri, stickerAssetUri, topColor, bottomColor);
+                    result.success(null);
+                } catch (IOException e) {
+                    result.error(e.getMessage(), null, null);
+                }
                 break;
             default:
                 result.notImplemented();

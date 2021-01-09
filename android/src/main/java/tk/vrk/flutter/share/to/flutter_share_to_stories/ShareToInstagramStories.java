@@ -28,7 +28,7 @@ public class ShareToInstagramStories {
         this.activity = activity;
     }
 
-    void shareToStories(Uri backgroundAssetUri, Uri stickerAssetUri, String topColor, String bottomColor) {
+    void shareToStories(Uri backgroundAssetUri, Uri stickerAssetUri, String topColor, String bottomColor) throws IOException {
         if (backgroundAssetUri == null && stickerAssetUri == null) {
             throw new IllegalArgumentException("Background Asset Uri or Sticker Asset Uri must not be null");
         }
@@ -39,8 +39,7 @@ public class ShareToInstagramStories {
         intent.putExtra("source_application", context.getPackageName());
 
         if (backgroundAssetUri != null) {
-            File file = new File(backgroundAssetUri.getPath());
-            Uri uri = FileProvider.getUriForFile(context, context.getPackageName() + ".flutter.share_to_stories", file);
+            Uri uri = getFileUri(backgroundAssetUri.getPath());
 
             String ext = MimeTypeMap.getFileExtensionFromUrl(uri.getPath());
             String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext);
@@ -49,8 +48,7 @@ public class ShareToInstagramStories {
         }
 
         if (stickerAssetUri != null) {
-            File file = new File(stickerAssetUri.getPath());
-            Uri uri = FileProvider.getUriForFile(context, context.getPackageName() + ".flutter.share_to_stories", file);
+            Uri uri = getFileUri(stickerAssetUri.getPath());
 
             intent.setType("image/jpeg");
             intent.putExtra("interactive_asset_uri", uri);
@@ -83,7 +81,7 @@ public class ShareToInstagramStories {
         }
     }
 
-    private Uri getFile(String path) throws IOException {
+    private Uri getFileUri(String path) throws IOException {
         File file = new File(path);
         if (!fileIsOnExternal(file)) {
             file = copyToExternalFolder(file);
