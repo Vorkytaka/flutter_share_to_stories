@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 
 import java.io.File;
+import java.io.IOException;
 
 public class ShareToInstagramStories {
     private final Context context;
@@ -80,15 +81,25 @@ public class ShareToInstagramStories {
 
     private Uri getFile(String path) {
         File file = new File(path);
-
-        // todo: check if file is external
-
+        if(!fileIsOnExternal(file)) {
+            // todo: copy file to local
+        }
         final Context context = getContext();
         return FileProvider.getUriForFile(
                 context,
                 context.getPackageName() + ".flutter.share_to_stories",
                 file
         );
+    }
+
+    private boolean fileIsOnExternal(File file) {
+        try {
+            String filePath = file.getCanonicalPath();
+            File externalDir = context.getExternalFilesDir(null);
+            return externalDir != null && filePath.startsWith(externalDir.getCanonicalPath());
+        } catch (IOException e) {
+            return false;
+        }
     }
 
     @NonNull
