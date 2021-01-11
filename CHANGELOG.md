@@ -1,3 +1,6 @@
 ## 0.0.1
 
-* TODO: Describe initial release.
+* Initial release
+* Android support
+* Without iOS support
+* Without unit/integration tests
